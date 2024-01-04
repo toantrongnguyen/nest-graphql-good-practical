@@ -1,0 +1,102 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Option {
+  label: String!
+  value: String!
+}
+
+type Query {
+  questions: [QuestionUnion!]!
+  question(id: Int!): QuestionUnion!
+}
+
+union QuestionUnion = MultipleChoiceQuestion | OpenEndedQuestion | TrueFalseQuestion | RankQuestion
+
+type MultipleChoiceQuestion implements AbstractQuestion {
+  id: Int!
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  options: [Option!]!
+  answer: String!
+}
+
+interface AbstractQuestion {
+  id: Int!
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+}
+
+enum QUESTION_TYPE {
+  MULTIPLE_CHOICE
+  OPEN_ENDED
+  TRUE_FALSE
+  RANK
+}
+
+type OpenEndedQuestion implements AbstractQuestion {
+  id: Int!
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  answer: String!
+}
+
+type TrueFalseQuestion implements AbstractQuestion {
+  id: Int!
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  answer: Boolean!
+}
+
+type RankQuestion implements AbstractQuestion {
+  id: Int!
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  answer: RANK_SCALE!
+}
+
+enum RANK_SCALE {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+type Mutation {
+  createQuestion(createQuestionInput: CreateQuestionInput!): QuestionUnion!
+  updateQuestion(updateQuestionInput: UpdateQuestionInput!): QuestionUnion!
+  removeQuestion(id: Int!): QuestionUnion!
+}
+
+input CreateQuestionInput {
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  options: [MultipleChoiceQuestionOptionInput!]
+  multipleChoiceQuestionAnswer: String
+  openEndedQuestionAnswer: String
+  rankQuestionAnswer: String
+  trueFalseQuestionAnswer: Boolean
+}
+
+input MultipleChoiceQuestionOptionInput {
+  label: String!
+  value: String!
+}
+
+input UpdateQuestionInput {
+  problem: String!
+  description: String!
+  type: QUESTION_TYPE!
+  options: [MultipleChoiceQuestionOptionInput!]
+  multipleChoiceQuestionAnswer: String
+  openEndedQuestionAnswer: String
+  rankQuestionAnswer: String
+  trueFalseQuestionAnswer: Boolean
+  id: Int!
+}
